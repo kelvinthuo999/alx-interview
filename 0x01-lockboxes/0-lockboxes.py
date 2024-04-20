@@ -1,8 +1,20 @@
-#!/usr/bin/env python3
-"""Function to unlock all the boxes"""
+#!/usr/bin/python3
+
+"""
+Module for determining if all the boxes can be opened.
+"""
 
 
 def canUnlockAll(boxes):
+    """
+    Determines if all the boxes can be opened.
+
+    Args:
+        boxes (list): A list of lists where each sublist represents a box and contains keys to other boxes.
+
+    Returns:
+        bool: True if all boxes can be opened, False otherwise.
+    """
     if not boxes or len(boxes) == 0:
         return False
 
