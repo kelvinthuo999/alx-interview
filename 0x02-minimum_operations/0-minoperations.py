@@ -4,18 +4,17 @@
 
 def minOperations(n):
     """Function to determine minimum operations"""
-    if n <= 1:
-        return n
+    if n < 2:
+        return 0
 
     operations = 0
-    current_chars = 1
-    clipboard = 0
+    root = 2
 
-    while current_chars < n:
-        if n % current_chars == 0:
-            clipboard = current_chars
-            operations += 1
-        current_chars += clipboard
-        operations += 1
+    while root <= n:
+        if n % root == 0:
+            operations += root
+            n //= root
+            root -= 1
+        root += 1
 
     return operations
