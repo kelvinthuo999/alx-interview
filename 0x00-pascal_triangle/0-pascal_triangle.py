@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 '''Solution to Pascal's triangle'''
 
+
 def pascal_triangle(n):
     '''
     Parameters:
