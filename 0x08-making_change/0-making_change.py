@@ -14,9 +14,16 @@ def make_change(coins, total):
         int: Fewest num of coins needed to meet the total,
         or -1 if impossible.
     """
-    dp = [total + 1] * (total + 1)
-    dp[0] = 0
+    if not coins or coins is None:
+        return -1
+    if total <= 0:
+        return 0
+    change = 0
+    coins = sorted(coins)[::-1]
     for coin in coins:
-        for x in range(coin, total + 1):
-            dp[x] = min(dp[x], dp[x - coin] + 1)
-    return dp[total] if dp[total] <= total else -1
+        while coin <= total:
+            total -= coin
+            change += 1
+        if (total == 0):
+            return change
+    return -1
