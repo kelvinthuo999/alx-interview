@@ -1,37 +1,23 @@
 #!/usr/bin/python3
+"""Change making module.
 """
-This module demonstrates a function to calculate the fewest coins needed.
-"""
-
 
 def makeChange(coins, total):
+    """Determines the fewest number of coins needed to meet a given
+    amount total when given a pile of coins of different values.
     """
-    Determine the fewest number of coins needed to meet a given total amount.
-
-    Args:
-        coins (list): List of coin values.
-        total (int): Target total amount.
-
-    Returns:
-        int: Fewest number of coins needed to meet the total,
-        or -1 if impossible.
-    """
-    if total < 0:
-        return -1
-    elif total == 0:
+    if total <= 0:
         return 0
 
-    coins.sort(reverse=True)
-    count = 0
-    i = 0
+    # Initialize the array to store the minimum coins needed for each amount
+    dp = [float('inf')] * (total + 1)
+    dp[0] = 0
 
-    while total > 0:
-        if coins[i] <= total:
-            total -= coins[i]
-            count += 1
-        else:
-            i += 1
-        if i == len(coins) and total > 0:
-            return -1
+    # Iterate through each coin and update the dp array
+    for coin in coins:
+        for amount in range(coin, total + 1):
+            dp[amount] = min(dp[amount], dp[amount - coin] + 1)
 
-    return count
+    # If dp[total] is still infinity, it means the total can't be formed
+    return dp[total] if dp[total] != float('inf') else -1
+
