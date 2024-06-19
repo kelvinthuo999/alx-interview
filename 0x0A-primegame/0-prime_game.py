@@ -1,53 +1,47 @@
 #!/usr/bin/python3
 
-def is_winner(player):
-    return "Maria" if player == 0 else "Ben"
+def sieve_of_eratosthenes(n):
+    """Generate a list of booleans indicating prime status and cumulative prime count up to n."""
+    primes = [True] * (n + 1)
+    p = 2
+    while (p * p <= n):
+        if primes[p] == True:
+            for i in range(p * p, n + 1, p):
+                primes[i] = False
+        p += 1
+    primes[0], primes[1] = False, False  # 0 and 1 are not primes
 
-def is_prime(n):
-    """Check if a number is prime."""
-    if n < 2:
-        return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
+    # Create a cumulative count of primes up to each index
+    prime_count = [0] * (n + 1)
+    count = 0
+    for i in range(n + 1):
+        if primes[i]:
+            count += 1
+        prime_count[i] = count
+    
+    return primes, prime_count
 
 def isWinner(x, nums):
-    """
-    Determine the winner of the prime game.
+    """Determine the winner of the prime game."""
+    if x < 1 or not nums:
+        return None
+
+    max_num = max(nums)
+    _, prime_count = sieve_of_eratosthenes(max_num)
     
-    :param x: Number of rounds
-    :param nums: List of numbers for each round
-    :return: Name of the player that won the most rounds
-    """
-    winners = []
-    for i in range(x):
-        # Copy the current round's numbers for each player's turn
-        maria_nums = nums[i].copy()
-        ben_nums = nums[i].copy()
-        
-        # Simulate Maria's turn
-        for num in sorted(maria_nums, reverse=True):
-            if is_prime(num):
-                maria_nums = [n for n in maria_nums if n % num!= 0]
-                break
-        
-        # Simulate Ben's turn
-        for num in sorted(ben_nums, reverse=True):
-            if is_prime(num):
-                ben_nums = [n for n in ben_nums if n % num!= 0]
-                break
-        
-        # Update the winner count
-        winners.append(is_winner(i % 2))
-    
-    # Count the winners
-    counts = {player: winners.count(player) for player in ["Maria", "Ben"]}
-    
-    # Determine the overall winner
-    if counts["Maria"] > counts["Ben"]:
+    maria_wins = 0
+    ben_wins = 0
+
+    for n in nums:
+        if prime_count[n] % 2 == 0:
+            ben_wins += 1
+        else:
+            maria_wins += 1
+
+    if maria_wins > ben_wins:
         return "Maria"
-    elif counts["Ben"] > counts["Maria"]:
+    elif ben_wins > maria_wins:
         return "Ben"
     else:
         return None
+
